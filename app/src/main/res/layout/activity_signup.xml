@@ -1,41 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- activity_signup.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <EditText
-        android:id="@+id/edit_text_email_signup"
+        android:id="@+id/editTextNewEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:layout_margin="16dp"/>
+        android:inputType="textEmailAddress"/>
 
     <EditText
-        android:id="@+id/edit_text_password_signup"
+        android:id="@+id/editTextNewPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_below="@id/edit_text_email_signup"
-        android:layout_margin="16dp"/>
+        android:inputType="textPassword"/>
 
     <Button
-        android:id="@+id/button_signup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        android:layout_below="@id/edit_text_password_signup"
-        android:layout_margin="16dp"/>
-
-    <TextView
-        android:id="@+id/text_view_login"
+        android:id="@+id/buttonSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Already have an account? Log in"
-        android:layout_below="@id/button_signup"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
-
-</RelativeLayout>
+        android:text="Sign Up"
+        android:layout_gravity="center_horizontal"
+        android:onClick="registerUser"/>
+</LinearLayout>

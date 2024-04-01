@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "420468465719",
+    "project_id": "shiftsfinalproj",
+    "storage_bucket": "shiftsfinalproj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420468465719:android:27e256429b05c31e011fb2",
+        "android_client_info": {
+          "package_name": "com.example.shiftsfinalproj"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYFLi_l0u2XkhqjRjuF9G2KiraXFdNc8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

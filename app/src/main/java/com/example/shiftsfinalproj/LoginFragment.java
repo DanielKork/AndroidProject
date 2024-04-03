@@ -39,13 +39,13 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
         Button buttonLogin = view.findViewById(R.id.buttonLogin);
 
-        //buttonLogin.setOnClickListener(v -> loginUser());
+        buttonLogin.setOnClickListener(v -> loginUser());
 
         return view;
     }
@@ -65,50 +65,24 @@ public class LoginFragment extends Fragment {
         }
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Executor) this, task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d("Login", "signInWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
+                        // Login success
+                        Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
+
+                        // Replace the LoginFragment with ShiftsFragment
+                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_container, new ShiftsFragment());
+
+                        // Optionally, you can add the transaction to the back stack
+                        // transaction.addToBackStack(null);
+
+                        transaction.commit();
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w("Login", "signInWithEmail:failure", task.getException());
+                        // Login failed
                         Toast.makeText(getActivity(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                     }
                 });
     }
-
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            // Navigate to Main Activity
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, new ShiftsFragment());
-        } else {
-            // Stay on the login screen
-        }
-    }
-
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        // Login success
-//                        Toast.makeText(getActivity(), "Login successful", Toast.LENGTH_SHORT).show();
-//
-//                        // Replace the LoginFragment with ShiftsFragment
-//                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.fragment_container, new ShiftsFragment());
-//
-//                        // Optionally, you can add the transaction to the back stack
-//                        // transaction.addToBackStack(null);
-//
-//                        transaction.commit();
-//                    } else {
-//                        // Login failed
-//                        Toast.makeText(getActivity(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-    //}
 
 }

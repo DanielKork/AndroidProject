@@ -1,13 +1,44 @@
 <!-- fragment_shifts.xml -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- Add your UI elements here -->
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/editTextStartTime"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shifts Fragment Placeholder"
-        android:layout_gravity="center" />
+        android:hint="Start Time"
+        android:inputType="datetime" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editTextEndTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="End Time"
+        android:inputType="datetime" />
+
+    <EditText
+        android:id="@+id/editTextRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Role"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonAddShift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Shift" />
+
+    <!-- A simple layout to display the shifts. In a real app, this could be a RecyclerView. -->
+    <TextView
+        android:id="@+id/textViewShifts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Shifts will be displayed here"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@android:color/darker_gray" />
+</LinearLayout>

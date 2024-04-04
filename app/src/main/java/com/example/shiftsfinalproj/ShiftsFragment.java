@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,15 +26,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShiftsFragment extends Fragment {
 
+//    private EditText editTextStartTime, editTextEndTime, editTextRole;
+////    private DatabaseReference mDatabase;
+////    private FirebaseAuth mAuth;
+//    private FirebaseFirestore firestore;
+//    private FirebaseUser user;
+
     private EditText editTextStartTime, editTextEndTime, editTextRole;
-    private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
+    private TextView textViewShiftsDisplay;
     private FirebaseFirestore firestore;
     private FirebaseUser user;
 
@@ -42,8 +49,8 @@ public class ShiftsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shifts, container, false);
 
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mAuth = FirebaseAuth.getInstance();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
         firestore = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -51,9 +58,12 @@ public class ShiftsFragment extends Fragment {
         editTextStartTime = view.findViewById(R.id.editTextStartTime);
         editTextEndTime = view.findViewById(R.id.editTextEndTime);
         editTextRole = view.findViewById(R.id.editTextRole);
+        textViewShiftsDisplay = view.findViewById(R.id.textViewShiftsDisplay); // TextView to display shifts
         Button buttonAddShift = view.findViewById(R.id.buttonAddShift);
 
+        loadUserShifts();
         buttonAddShift.setOnClickListener(v -> addShift());
+
 
         return view;
     }
@@ -62,44 +72,101 @@ public class ShiftsFragment extends Fragment {
         String startTime = editTextStartTime.getText().toString().trim();
         String endTime = editTextEndTime.getText().toString().trim();
         String role = editTextRole.getText().toString().trim();
-        String userid = user.getUid();
 
-        // Generate a unique key for each shift
-        //String key = mDatabase.child("shifts").push().getKey();
+        if (startTime.isEmpty() || endTime.isEmpty() || role.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Shift shift = new Shift(startTime, endTime, role, userid);
-        Map<String, Object> shiftValues = new HashMap<>();
-        shiftValues.put("startTime", shift.startTime);
-        shiftValues.put("endTime", shift.endTime);
-        shiftValues.put("role", shift.role);
-        shiftValues.put("user_id", shift.userid);
+        if (user == null) {
+            Toast.makeText(getContext(), "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/shifts/" + key, shiftValues);
-
-//        mDatabase.updateChildren(childUpdates)
-//                .addOnSuccessListener(aVoid -> Log.d(TAG, "Shift added successfully!"))
-//                .addOnFailureListener(e -> Log.e(TAG, "Failed to add shift", e));
+        Map<String, Object> shift = new HashMap<>();
+        shift.put("startTime", startTime);
+        shift.put("endTime", endTime);
+        shift.put("role", role);
+        shift.put("user_id", user.getUid());
 
         firestore.collection("shifts")
-                .add(shiftValues)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        // Product added successfully
-                        Toast.makeText(getActivity(), "Success ", Toast.LENGTH_SHORT).show();
-                    }
+                .add(shift)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(getContext(), "Shift added successfully", Toast.LENGTH_SHORT).show();
+                    loadUserShifts();  // Reload shifts after adding
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Error adding product
-                        Toast.makeText(getActivity(), "failed: ", Toast.LENGTH_SHORT).show();
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void loadUserShifts() {
+        if (user == null) {
+            textViewShiftsDisplay.setText("No user logged in.");
+            return;
+        }
+
+        firestore.collection("shifts")
+                .whereEqualTo("user_id", user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        StringBuilder shiftsBuilder = new StringBuilder();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> shift = document.getData();
+                            shiftsBuilder.append("Start Time: ").append(shift.get("startTime"))
+                                    .append("\nEnd Time: ").append(shift.get("endTime"))
+                                    .append("\nRole: ").append(shift.get("role"))
+                                    .append("\n\n");
+                        }
+                        textViewShiftsDisplay.setText(shiftsBuilder.toString());
+                    } else {
+                        Log.e(TAG, "Error getting documents: ", task.getException());
                     }
                 });
-        //Toast.makeText(getActivity(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
+
+//    private void addShift() {
+//        String startTime = editTextStartTime.getText().toString().trim();
+//        String endTime = editTextEndTime.getText().toString().trim();
+//        String role = editTextRole.getText().toString().trim();
+//        String userid = user.getUid();
+//
+//        // Generate a unique key for each shift
+//        //String key = mDatabase.child("shifts").push().getKey();
+//
+//        Shift shift = new Shift(startTime, endTime, role, userid);
+//        Map<String, Object> shiftValues = new HashMap<>();
+//        shiftValues.put("startTime", shift.startTime);
+//        shiftValues.put("endTime", shift.endTime);
+//        shiftValues.put("role", shift.role);
+//        shiftValues.put("user_id", shift.userid);
+//
+////        Map<String, Object> childUpdates = new HashMap<>();
+////        childUpdates.put("/shifts/" + key, shiftValues);
+//
+////        mDatabase.updateChildren(childUpdates)
+////                .addOnSuccessListener(aVoid -> Log.d(TAG, "Shift added successfully!"))
+////                .addOnFailureListener(e -> Log.e(TAG, "Failed to add shift", e));
+//
+//        firestore.collection("shifts")
+//                .add(shiftValues)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        // Product added successfully
+//                        Toast.makeText(getActivity(), "Success ", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        // Error adding product
+//                        Toast.makeText(getActivity(), "failed: ", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//        //Toast.makeText(getActivity(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//    }
+//}
 
 
 

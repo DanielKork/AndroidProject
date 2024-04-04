@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Start Time"
-        android:inputType="datetime" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/editTextEndTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="End Time"
-        android:inputType="datetime" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/editTextRole"
@@ -28,17 +28,16 @@
 
     <Button
         android:id="@+id/buttonAddShift"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Shift" />
+        android:text="Add Shift"
+        android:layout_gravity="center_horizontal" />
 
-    <!-- A simple layout to display the shifts. In a real app, this could be a RecyclerView. -->
     <TextView
-        android:id="@+id/textViewShifts"
+        android:id="@+id/textViewShiftsDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Shifts will be displayed here"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_marginTop="20dp" />
+
 </LinearLayout>

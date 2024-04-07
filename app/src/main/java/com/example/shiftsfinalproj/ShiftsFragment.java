@@ -3,12 +3,14 @@ package com.example.shiftsfinalproj;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.net.ParseException;
@@ -33,14 +35,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
 public class ShiftsFragment extends Fragment {
-    private EditText editTextStartTime, editTextEndTime, editTextRole;
+    private EditText editTextRole;
     private TextView textViewStartDate, textViewEndDate, textViewStartTime, textViewEndTime;
     private TextView textViewShiftsDisplay;
     private FirebaseFirestore firestore;
@@ -52,14 +56,10 @@ public class ShiftsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shifts, container, false);
 
-//        mAuth = FirebaseAuth.getInstance();
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
         firestore = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-//        editTextStartTime = view.findViewById(R.id.editTextStartTime);
-//        editTextEndTime = view.findViewById(R.id.editTextEndTime);
         editTextRole = view.findViewById(R.id.editTextRole);
         textViewStartDate = view.findViewById(R.id.textViewStartDate);
         textViewStartTime = view.findViewById(R.id.textViewStartTime);
@@ -89,6 +89,7 @@ public class ShiftsFragment extends Fragment {
 
         return view;
     }
+
     private void showDatePickerDialog(boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -110,6 +111,7 @@ public class ShiftsFragment extends Fragment {
                 day);
         datePickerDialog.show();
     }
+
     private void showTimePickerDialog(boolean isStartTime) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -133,14 +135,10 @@ public class ShiftsFragment extends Fragment {
     }
 
     private void addShift() {
-//        String startTime = editTextStartTime.getText().toString().trim();
-//        String endTime = editTextEndTime.getText().toString().trim();
-//        String role = editTextRole.getText().toString().trim();
         String startDate = textViewStartDate.getText().toString().replace("Start Date: ", "").trim();
         String endDate = textViewEndDate.getText().toString().replace("End Date: ", "").trim();
         String startTime = textViewStartTime.getText().toString().replace("Start Time: ", "").trim();
         String endTime = textViewEndTime.getText().toString().replace("End Time: ", "").trim();
-        //String role = editTextRole != null ? editTextRole.getText().toString().trim() : "";
         String role = editTextRole.getText().toString().trim();
 
         if (startTime.isEmpty() || endTime.isEmpty() || startDate.isEmpty() || role.isEmpty()) {
@@ -156,11 +154,6 @@ public class ShiftsFragment extends Fragment {
         long startTimestamp = combineDateAndTime(startDate, startTime);
         long endTimestamp = combineDateAndTime(endDate, endTime);
 
-//        Map<String, Object> shift = new HashMap<>();
-//        shift.put("startTime", startTime);
-//        shift.put("endTime", endTime);
-//        shift.put("role", role);
-//        shift.put("user_id", user.getUid());
         Map<String, Object> shift = new HashMap<>();
         shift.put("startTimestamp", startTimestamp);
         shift.put("endTimestamp", endTimestamp);
@@ -175,14 +168,19 @@ public class ShiftsFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
     private long combineDateAndTime(String date, String time) {
-        // Assuming date format is "dd/MM/yyyy" and time format is "HH:mm"
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         try {
             Date parsedDate = dateFormat.parse(date + " " + time);
-            return parsedDate != null ? parsedDate.getTime() : 0;
+            if (parsedDate != null) {
+                return parsedDate.getTime();
+            } else {
+                Log.e(TAG, "Parsed date is null for date: " + date + " and time: " + time);
+                return 0;
+            }
         } catch (ParseException e) {
-            Log.e(TAG, "Failed to parse date or time", e);
+            Log.e(TAG, "Failed to parse date or time for date: " + date + " and time: " + time, e);
             return 0;
         } catch (java.text.ParseException e) {
             throw new RuntimeException(e);
@@ -199,17 +197,6 @@ public class ShiftsFragment extends Fragment {
                 .whereEqualTo("user_id", user.getUid())
                 .get()
                 .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        StringBuilder shiftsBuilder = new StringBuilder();
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            Map<String, Object> shift = document.getData();
-//                            shiftsBuilder.append("Start Time: ").append(shift.get("startTime"))
-//                                    .append("\nEnd Time: ").append(shift.get("endTime"))
-//                                    .append("\nRole: ").append(shift.get("role"))
-//                                    .append("\n\n");
-//                        }
-//                        textViewShiftsDisplay.setText(shiftsBuilder.toString());
-//                    }
                     if (task.isSuccessful()) {
                         StringBuilder shiftsBuilder = new StringBuilder();
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
@@ -233,27 +220,43 @@ public class ShiftsFragment extends Fragment {
                     }
                 });
     }
+
     private void addAllShiftsToCalendar() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG, "Calendar write permission not granted");
             requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR, Manifest.permission.READ_CALENDAR}, PERMISSION_REQUEST_CODE);
             return;
         }
 
-        if (user != null) {
-            firestore.collection("shifts")
-                    .whereEqualTo("user_id", user.getUid())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Shift shift = document.toObject(Shift.class);
-                                addEventToCalendar(shift.getRole(), convertTimeToMillis(shift.getStartTime()), convertTimeToMillis(shift.getEndTime()));
-                            }
-                        } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
-                        }
-                    });
+        if (user == null) {
+            Log.e(TAG, "User is null");
+            return;
         }
+        showCalendarSelection();
+        firestore.collection("shifts")
+                .whereEqualTo("user_id", user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Log.d(TAG, "Successfully retrieved shifts");
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Shift shift = document.toObject(Shift.class);
+                            if (shift != null) {
+                                // Directly use the start and end timestamps from the Shift object.
+                                String role = shift.getRole() != null ? shift.getRole() : "No Role";
+                                long startTimestamp = shift.getStartTimestamp();
+                                long endTimestamp = shift.getEndTimestamp();
+
+                                Log.d(TAG, "Role: " + role + ", Start Time: " + startTimestamp + ", End Time: " + endTimestamp);
+                                addEventToCalendar(role, startTimestamp, endTimestamp);
+                            } else {
+                                Log.e(TAG, "Shift object is null for document: " + document.getId());
+                            }
+                        }
+                    } else {
+                        Log.e(TAG, "Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     private void addEventToCalendar(String title, long beginTimeInMillis, long endTimeInMillis) {
@@ -262,13 +265,25 @@ public class ShiftsFragment extends Fragment {
             return;
         }
 
+        if (title == null) {
+            Log.e(TAG, "Title is null");
+            title = "No Title";  // Provide a default title if null
+        }
+
         ContentResolver cr = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
         values.put(CalendarContract.Events.DTSTART, beginTimeInMillis);
         values.put(CalendarContract.Events.DTEND, endTimeInMillis);
         values.put(CalendarContract.Events.TITLE, title);
         values.put(CalendarContract.Events.DESCRIPTION, "Generated from Shifts App");
-        values.put(CalendarContract.Events.CALENDAR_ID, 1);
+
+        long calendarId = getPrimaryCalendarId();
+        if (calendarId == -1) {
+            Log.e(TAG, "No valid calendar ID found");
+            return;  // Exit the method if no valid calendar ID is found
+        }
+        values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
+
         values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
 
         Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
@@ -277,9 +292,39 @@ public class ShiftsFragment extends Fragment {
         }
     }
 
-    private long convertTimeToMillis(String time) {
-        // Convert your time string to milliseconds
-        return 0;
+    private long getPrimaryCalendarId() {
+        Cursor cursor = null;
+        try {
+            cursor = getContext().getContentResolver().query(
+                    CalendarContract.Calendars.CONTENT_URI,
+                    new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.IS_PRIMARY},
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    long id = cursor.getLong(0);
+                    boolean isPrimary = cursor.getInt(1) == 1;
+                    if (isPrimary) {
+                        Log.d(TAG, "Using primary calendar ID: " + id);
+                        return id;
+                    }
+                }
+                // If no primary calendar, return the ID of the last calendar.
+                if (cursor.moveToLast()) {
+                    long id = cursor.getLong(0);
+                    Log.d(TAG, "Primary calendar not found, using last calendar ID: " + id);
+                    return id;
+                }
+            }
+            Log.e(TAG, "No valid calendar ID found or cursor is null");
+            return -1;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 
     @Override
@@ -294,4 +339,56 @@ public class ShiftsFragment extends Fragment {
         }
     }
 
+    private void showCalendarSelection() {
+        List<String> calendarNames = new ArrayList<>();
+        List<Long> calendarIds = new ArrayList<>();
+
+        Cursor cursor = getContext().getContentResolver().query(
+                CalendarContract.Calendars.CONTENT_URI,
+                new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(0);
+                String name = cursor.getString(1);
+                calendarIds.add(id);
+                calendarNames.add(name);
+            }
+            cursor.close();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Select Calendar");
+        CharSequence[] items = calendarNames.toArray(new CharSequence[0]);
+        builder.setItems(items, (dialog, which) -> {
+            long selectedCalendarId = calendarIds.get(which);
+            Log.d(TAG, "User selected calendar ID: " + selectedCalendarId);
+            // Save the selected calendar ID for future operations
+            // e.g., SharedPreferences or directly use it for adding events
+        });
+        builder.show();
+    }
 }
+
+
+//    private long convertTimeToMillis(String dateTime) {
+//        if (dateTime == null) {
+//            Log.e(TAG, "DateTime string is null");
+//            return 0;
+//        }
+//
+//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+//        try {
+//            Date date = sdf.parse(dateTime);
+//            return date != null ? date.getTime() : 0;
+//        } catch (ParseException e) {
+//            Log.e(TAG, "Error parsing date/time: " + dateTime, e);
+//            return 0;
+//        } catch (java.text.ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }

@@ -478,6 +478,10 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         shiftsRecyclerView.setAdapter(shiftAdapter);
     }
 
+
+
+
+    //Load shitfs
     private void loadUserShifts() {
         if (user == null) return;
         firestore.collection("shifts").whereEqualTo("user_id", user.getUid())
@@ -496,6 +500,12 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 .addOnFailureListener(e -> Log.e(TAG, "Error loading shifts", e));
     }
 
+
+
+
+
+
+    //Edit Button and functions
     @Override
     public void onEditClick(Shift shift) {
         showEditDialog(shift);
@@ -552,6 +562,8 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
     }
 
 
+
+    //Delete Button and functions
     @Override
     public void onDeleteClick(Shift shift) {
         // Delete the shift from Firestore
@@ -563,6 +575,9 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error deleting shift", Toast.LENGTH_SHORT).show());
     }
+
+
+
 
 //    private void addShift() {
 //        String role = editTextRole.getText().toString();
@@ -592,6 +607,8 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 //                })
 //                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
 //    }
+
+    //Add shift
     private void addShift() {
         String startDate = textViewStartDate.getText().toString().replace("Start Date: ", "").trim();
         String endDate = textViewEndDate.getText().toString().replace("End Date: ", "").trim();
@@ -629,6 +646,10 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
 
 
+
+
+
+    //Add to calendar with all the functions
     private void addAllShiftsToCalendar() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             Log.e(TAG, "Calendar write permission not granted");
@@ -666,7 +687,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                     }
                 });
     }
-
     private void addEventToCalendar(String title, long beginTimeInMillis, long endTimeInMillis) {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getContext(), "Calendar permission not granted", Toast.LENGTH_SHORT).show();
@@ -699,7 +719,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
             Toast.makeText(getContext(), "Failed to add event to calendar", Toast.LENGTH_SHORT).show();
         }
     }
-
     private long getPrimaryCalendarId() {
         Cursor cursor = null;
         try {
@@ -734,7 +753,22 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
             }
         }
     }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addAllShiftsToCalendar();
+            } else {
+                Toast.makeText(getContext(), "Permission denied to write to calendar", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
+
+
+
+
+    //All the diffrent showDialog
     private void showCalendarSelection() {
         List<String> calendarNames = new ArrayList<>();
         List<Long> calendarIds = new ArrayList<>();
@@ -768,7 +802,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         });
         builder.show();
     }
-
     private void showDatePickerDialog(boolean isStartDate) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -790,7 +823,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 day);
         datePickerDialog.show();
     }
-
     private void showTimePickerDialog(boolean isStartTime) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -813,6 +845,11 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         timePickerDialog.show();
     }
 
+
+
+
+
+    //Time convertor
     private long combineDateAndTime(String date, String time) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         try {
@@ -828,17 +865,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
             return 0;
         } catch (java.text.ParseException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length > 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                addAllShiftsToCalendar();
-            } else {
-                Toast.makeText(getContext(), "Permission denied to write to calendar", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 }

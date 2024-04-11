@@ -16,12 +16,6 @@
         android:gravity="start|top"
         android:paddingRight="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
-<!--        android:id="@+id/shiftInfoTextView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:text="Shift Information"-->
-<!--        android:textSize="13dp" />-->
 
     <Button
         android:id="@+id/editShiftButton"

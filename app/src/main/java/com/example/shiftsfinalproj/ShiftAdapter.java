@@ -35,11 +35,8 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Shift shift = shiftList.get(position);
-//        holder.shiftInfoTextView.setText("Start time: " + shift.getStartTimestamp() + '\n' +
-//                "End time: " + shift.getEndTimestamp() + '\n' +
-//                "Role: " + shift.getRole());
         holder.shiftInfoTextView.setText(shift.toString());// Customize this to display shift info
-        //holder.editButton.setOnClickListener(v -> clickListener.onEditClick(shift));
+        holder.editButton.setOnClickListener(v -> clickListener.onEditClick(shift));
         holder.deleteButton.setOnClickListener(v -> clickListener.onDeleteClick(shift));
     }
 
@@ -55,7 +52,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         ViewHolder(View itemView) {
             super(itemView);
             shiftInfoTextView = itemView.findViewById(R.id.shiftInfoTextView);
-            //editButton = itemView.findViewById(R.id.editShiftButton);
+            editButton = itemView.findViewById(R.id.editShiftButton);
             deleteButton = itemView.findViewById(R.id.deleteShiftButton);
         }
     }

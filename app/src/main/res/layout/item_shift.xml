@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="25dp">
+    android:padding="20dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/shiftInfoTextView"
@@ -11,13 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Shift Information"
-        android:textSize="16dp" />
+        android:textSize="13dp"
+        android:gravity="start|top"
+        android:paddingRight="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+<!--        android:id="@+id/shiftInfoTextView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="100dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="Shift Information"-->
+<!--        android:textSize="13dp" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/editShiftButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Edit" />-->
+    <Button
+        android:id="@+id/editShiftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit" />
 
     <Button
         android:id="@+id/deleteShiftButton"

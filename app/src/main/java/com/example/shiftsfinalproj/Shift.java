@@ -45,7 +45,12 @@
 
 package com.example.shiftsfinalproj;
 
+import android.icu.text.SimpleDateFormat;
+
 import androidx.annotation.NonNull;
+
+import java.util.Date;
+import java.util.Locale;
 
 public class Shift {
     String shift_id;
@@ -53,8 +58,8 @@ public class Shift {
     private long endTimestamp;
     private String user_id; // Ensure this matches the field name in Firestore.
     private String role;
-
-    //String startDate = startTimestamp != null ? dateFormat.format(new Date(startTimestamp)) : "Unknown";
+    String startDate;
+    String endDate;
 
     // Default constructor is required for Firebase's automatic data mapping.
     public Shift() {
@@ -108,10 +113,21 @@ public class Shift {
         this.role = role;
     }
 
+    public void setStartDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        this.startDate = dateFormat.format(new Date(startTimestamp));
+    }
+    public void setEndDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        this.endDate = dateFormat.format(new Date(endTimestamp));
+    }
+
+
     @NonNull
     @Override
     public String toString() {
-        return "Start time: " + this.startTimestamp + " End time: " + this.endTimestamp + '\n' +
+        return "Start time: " + this.startDate + '\n' +
+                "End time: " + this.endDate + '\n' +
                 "Role: " + this.role;
     }
 }

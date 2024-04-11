@@ -480,6 +480,24 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         shiftsRecyclerView.setAdapter(shiftAdapter);
     }
 
+    private void loadUserShifts() {
+        if (user == null) return;
+        firestore.collection("shifts").whereEqualTo("user_id", user.getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    shifts.clear();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Shift shift = document.toObject(Shift.class);
+                        shift.setStartDate();
+                        shift.setEndDate();
+                        shift.setShift_id(document.getId()); // Make sure Shift has an id field
+                        shifts.add(shift);
+                    }
+                    shiftAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error loading shifts", e));
+    }
+
     @Override
     public void onEditClick(Shift shift) {
         // Implement the logic for editing a shift. This could involve showing a dialog or navigating to a different Fragment/Activity
@@ -497,50 +515,70 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error deleting shift", Toast.LENGTH_SHORT).show());
     }
 
+//    private void addShift() {
+//        String role = editTextRole.getText().toString();
+//        String startDate = textViewStartDate.getText().toString();
+//        String endDate = textViewEndDate.getText().toString();
+//        String startTime = textViewStartTime.getText().toString();
+//        String endTime = textViewEndTime.getText().toString();
+//
+//        if (role.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+//            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        Map<String, Object> shift = new HashMap<>();
+//        shift.put("role", role);
+//        shift.put("startDate", startDate);
+//        shift.put("endDate", endDate);
+//        shift.put("startTime", startTime);
+//        shift.put("endTime", endTime);
+//        shift.put("user_id", user != null ? user.getUid() : "anonymous");
+//
+//        firestore.collection("shifts")
+//                .add(shift)
+//                .addOnSuccessListener(documentReference -> {
+//                    Toast.makeText(getContext(), "Shift added", Toast.LENGTH_SHORT).show();
+//                    loadUserShifts(); // Reload the shifts
+//                })
+//                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
+//    }
     private void addShift() {
-        String role = editTextRole.getText().toString();
-        String startDate = textViewStartDate.getText().toString();
-        String endDate = textViewEndDate.getText().toString();
-        String startTime = textViewStartTime.getText().toString();
-        String endTime = textViewEndTime.getText().toString();
+        String startDate = textViewStartDate.getText().toString().replace("Start Date: ", "").trim();
+        String endDate = textViewEndDate.getText().toString().replace("End Date: ", "").trim();
+        String startTime = textViewStartTime.getText().toString().replace("Start Time: ", "").trim();
+        String endTime = textViewEndTime.getText().toString().replace("End Time: ", "").trim();
+        String role = editTextRole.getText().toString().trim();
 
-        if (role.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+        if (startTime.isEmpty() || endTime.isEmpty() || startDate.isEmpty() || role.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        if (user == null) {
+            Toast.makeText(getContext(), "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        long startTimestamp = combineDateAndTime(startDate, startTime);
+        long endTimestamp = combineDateAndTime(endDate, endTime);
+
         Map<String, Object> shift = new HashMap<>();
+        shift.put("startTimestamp", startTimestamp);
+        shift.put("endTimestamp", endTimestamp);
         shift.put("role", role);
-        shift.put("startDate", startDate);
-        shift.put("endDate", endDate);
-        shift.put("startTime", startTime);
-        shift.put("endTime", endTime);
-        shift.put("user_id", user != null ? user.getUid() : "anonymous");
+        shift.put("user_id", user.getUid());
 
         firestore.collection("shifts")
                 .add(shift)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(getContext(), "Shift added", Toast.LENGTH_SHORT).show();
-                    loadUserShifts(); // Reload the shifts
+                    Toast.makeText(getContext(), "Shift added successfully", Toast.LENGTH_SHORT).show();
+                    loadUserShifts();  // Reload shifts after adding
                 })
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void loadUserShifts() {
-        if (user == null) return;
-        firestore.collection("shifts").whereEqualTo("user_id", user.getUid())
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    shifts.clear();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Shift shift = document.toObject(Shift.class);
-                        shift.setShift_id(document.getId()); // Make sure Shift has an id field
-                        shifts.add(shift);
-                    }
-                    shiftAdapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> Log.e(TAG, "Error loading shifts", e));
-    }
+
 
     private void addAllShiftsToCalendar() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -724,6 +762,24 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 true  // Use 24-hour time format
         );
         timePickerDialog.show();
+    }
+
+    private long combineDateAndTime(String date, String time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        try {
+            Date parsedDate = dateFormat.parse(date + " " + time);
+            if (parsedDate != null) {
+                return parsedDate.getTime();
+            } else {
+                Log.e(TAG, "Parsed date is null for date: " + date + " and time: " + time);
+                return 0;
+            }
+        } catch (ParseException e) {
+            Log.e(TAG, "Failed to parse date or time for date: " + date + " and time: " + time, e);
+            return 0;
+        } catch (java.text.ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

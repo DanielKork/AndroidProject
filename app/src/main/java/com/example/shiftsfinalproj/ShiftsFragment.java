@@ -394,6 +394,7 @@ import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -469,9 +470,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         loadUserShifts();
         buttonAddShift.setOnClickListener(v -> addShift());
         buttonAddAllShiftsToCalendar.setOnClickListener(v -> addAllShiftsToCalendar());
-
-//        Button buttonAddShift = view.findViewById(R.id.buttonAddShift);
-//        buttonAddShift.setOnClickListener(v -> addShift());
     }
 
     private void setupRecyclerView() {
@@ -500,8 +498,59 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
     @Override
     public void onEditClick(Shift shift) {
-        // Implement the logic for editing a shift. This could involve showing a dialog or navigating to a different Fragment/Activity
+        showEditDialog(shift);
     }
+    public void showEditDialog(Shift shift) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Edit Shift");
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_shift_dialog, null);
+
+        EditText editRole = dialogView.findViewById(R.id.editRole);
+        EditText editStartDate = dialogView.findViewById(R.id.editStartDate);
+        EditText editStartTime = dialogView.findViewById(R.id.editStartTime);
+        EditText editEndDate = dialogView.findViewById(R.id.editEndDate);
+        EditText editEndTime = dialogView.findViewById(R.id.editEndTime);
+
+        // Initialize fields with current shift data
+        editRole.setText(shift.getRole());
+        editStartDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(shift.getStartTimestamp())));
+        editStartTime.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(shift.getStartTimestamp())));
+        editEndDate.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(shift.getEndTimestamp())));
+        editEndTime.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(shift.getEndTimestamp())));
+
+        builder.setView(dialogView);
+
+        builder.setPositiveButton("Update", (dialog, which) -> {
+            String newRole = editRole.getText().toString();
+            long newStartTimestamp = combineDateAndTime(editStartDate.getText().toString(), editStartTime.getText().toString());
+            long newEndTimestamp = combineDateAndTime(editEndDate.getText().toString(), editEndTime.getText().toString());
+
+            updateShift(shift, newRole, newStartTimestamp, newEndTimestamp);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+    private void updateShift(Shift shift, String newRole, long newStartTimestamp, long newEndTimestamp) {
+        Map<String, Object> update = new HashMap<>();
+        update.put("role", newRole);
+        update.put("startTimestamp", newStartTimestamp);
+        update.put("endTimestamp", newEndTimestamp);
+
+        firestore.collection("shifts").document(shift.getShiftid())
+                .update(update)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Shift updated", Toast.LENGTH_SHORT).show();
+                    loadUserShifts();  // Reload the data
+                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error updating shift", Toast.LENGTH_SHORT).show());
+    }
+
 
     @Override
     public void onDeleteClick(Shift shift) {

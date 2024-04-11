@@ -45,11 +45,16 @@
 
 package com.example.shiftsfinalproj;
 
+import androidx.annotation.NonNull;
+
 public class Shift {
+    String shift_id;
     private long startTimestamp;
     private long endTimestamp;
     private String user_id; // Ensure this matches the field name in Firestore.
     private String role;
+
+    //String startDate = startTimestamp != null ? dateFormat.format(new Date(startTimestamp)) : "Unknown";
 
     // Default constructor is required for Firebase's automatic data mapping.
     public Shift() {
@@ -76,11 +81,15 @@ public class Shift {
     public long getEndTimestamp() {
         return endTimestamp;
     }
-
     public void setEndTimestamp(long endTimestamp) {
         this.endTimestamp = endTimestamp;
     }
-
+    public String getShiftid() {
+        return shift_id;
+    }
+    public void setShift_id(String shift_id) {
+        this.shift_id = shift_id;
+    }
     // Getters and setters for userId.
     public String getuser_id() {
         return user_id;
@@ -97,6 +106,13 @@ public class Shift {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Start time: " + this.startTimestamp + " End time: " + this.endTimestamp + '\n' +
+                "Role: " + this.role;
     }
 }
 

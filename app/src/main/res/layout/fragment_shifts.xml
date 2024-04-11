@@ -1,88 +1,93 @@
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:padding="16dp">-->
+<!--    android:fillViewport="true">-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonSelectStartDate"-->
+<!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:text="Select Start Date" />-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="16dp">-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/textViewStartDate"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Start Date: Not Set"-->
-<!--        android:padding="4dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonSelectStartDate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Select Start Date" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonSelectEndDate"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Select End Date" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewStartDate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Start Date: Not Set"-->
+<!--            android:padding="4dp"/>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/textViewEndDate"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="End Date: Not Set"-->
-<!--        android:padding="4dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonSelectEndDate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Select End Date" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonSelectStartTime"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Select Start Time" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewEndDate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="End Date: Not Set"-->
+<!--            android:padding="4dp"/>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/textViewStartTime"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Start Time: Not Set"-->
-<!--        android:padding="4dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonSelectStartTime"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Select Start Time" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonSelectEndTime"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Select End Time" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewStartTime"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Start Time: Not Set"-->
+<!--            android:padding="4dp"/>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/textViewEndTime"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="End Time: Not Set"-->
-<!--        android:padding="4dp"/>-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonSelectEndTime"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Select End Time" />-->
 
-<!--    <EditText-->
-<!--        android:id="@+id/editTextRole"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Role"-->
-<!--        android:inputType="text" />-->
+<!--        <TextView-->
+<!--            android:id="@+id/textViewEndTime"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="End Time: Not Set"-->
+<!--            android:padding="4dp"/>-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonAddShift"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Add Shift" />-->
+<!--        <EditText-->
+<!--            android:id="@+id/editTextRole"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Role"-->
+<!--            android:inputType="text" />-->
 
-<!--    <Button-->
-<!--        android:id="@+id/buttonAddAllShiftsToCalendar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Add All Shifts to Calendar" />-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonAddShift"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Add Shift" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/textViewShiftsDisplay"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Shifts will be displayed here"-->
-<!--        android:paddingTop="20dp" />-->
-<!--</LinearLayout>-->
+<!--        <Button-->
+<!--            android:id="@+id/buttonAddAllShiftsToCalendar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Add All Shifts to Calendar" />-->
 
+<!--        <TextView-->
+<!--            android:id="@+id/textViewShiftsDisplay"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Shifts will be displayed here"-->
+<!--            android:paddingTop="20dp" />-->
+<!--    </LinearLayout>-->
+<!--</ScrollView>-->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -166,12 +171,10 @@
             android:layout_height="wrap_content"
             android:text="Add All Shifts to Calendar" />
 
-        <TextView
-            android:id="@+id/textViewShiftsDisplay"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shiftsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shifts will be displayed here"
-            android:paddingTop="20dp" />
+            android:layout_marginTop="25dp" />
     </LinearLayout>
 </ScrollView>
-

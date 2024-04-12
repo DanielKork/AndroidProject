@@ -563,6 +563,9 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
 
 
+
+
+
     //Delete Button and functions
     @Override
     public void onDeleteClick(Shift shift) {
@@ -575,6 +578,9 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error deleting shift", Toast.LENGTH_SHORT).show());
     }
+
+
+
 
 
 
@@ -643,6 +649,7 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
 
 
 
@@ -768,6 +775,8 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
 
 
+
+
     //All the diffrent showDialog
     private void showCalendarSelection() {
         List<String> calendarNames = new ArrayList<>();
@@ -844,6 +853,8 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         );
         timePickerDialog.show();
     }
+
+
 
 
 

@@ -583,6 +583,21 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
 
 
+    //add to calendar for each shift
+    @Override
+    public void onAddToCalendarClick(Shift shift) {
+            if (shift != null) {
+            // Directly use the start and end timestamps from the Shift object.
+            String role = shift.getRole() != null ? shift.getRole() : "No Role";
+            long startTimestamp = shift.getStartTimestamp();
+            long endTimestamp = shift.getEndTimestamp();
+
+            Log.d(TAG, "Role: " + role + ", Start Time: " + startTimestamp + ", End Time: " + endTimestamp);
+            addEventToCalendar(role, startTimestamp, endTimestamp);
+            Toast.makeText(getContext(), "Added", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 //    private void addShift() {

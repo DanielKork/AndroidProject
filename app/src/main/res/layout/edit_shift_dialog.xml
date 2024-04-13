@@ -3,41 +3,150 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
 
-    <EditText
-        android:id="@+id/editRole"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/roleTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Role"
-        android:inputType="text" />
+        android:hint="Role">
 
-    <EditText
-        android:id="@+id/editStartDate"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Date (dd/MM/yyyy)"
-        android:inputType="date" />
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/editStartTime"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/startDateTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Start Date (dd/MM/yyyy)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/startTimeTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:hint="Start Time (HH:mm)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="time" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start Time (HH:mm)"
-        android:inputType="time" />
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
 
-    <EditText
-        android:id="@+id/editEndDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Date (dd/MM/yyyy)"
-        android:inputType="date" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/endDateTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="End Date (dd/MM/yyyy)">
 
-    <EditText
-        android:id="@+id/editEndTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End Time (HH:mm)"
-        android:inputType="time" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/endTimeTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:hint="End Time (HH:mm)">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="time" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
+
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="vertical"-->
+<!--    android:padding="24dp">-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editRole"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Role"-->
+<!--        android:inputType="text" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editStartDate"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Start Date (dd/MM/yyyy)"-->
+<!--        android:inputType="date" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editStartTime"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Start Time (HH:mm)"-->
+<!--        android:inputType="time" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editEndDate"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="End Date (dd/MM/yyyy)"-->
+<!--        android:inputType="date" />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editEndTime"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="End Time (HH:mm)"-->
+<!--        android:inputType="time" />-->
+
+<!--</LinearLayout>-->
+
+

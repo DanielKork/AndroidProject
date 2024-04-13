@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,17 @@ public class SignupFragment extends Fragment {
         editTextNewEmail = view.findViewById(R.id.editTextNewEmail);
         editTextNewPassword = view.findViewById(R.id.editTextNewPassword);
         Button buttonSignup = view.findViewById(R.id.buttonSignup);
+
+        TextView goToLoginText = view.findViewById(R.id.textViewGoToLogin);
+        goToLoginText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new LoginFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+            }
+        });
 
         buttonSignup.setOnClickListener(v -> registerUser());
 

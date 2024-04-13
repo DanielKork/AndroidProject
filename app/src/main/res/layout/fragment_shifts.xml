@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:background="#F9F9F9">
 
@@ -11,13 +12,17 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonAddAllShiftsToCalendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add All Shifts to Calendar"
             android:textColor="#FFFFFF"
-            android:background="@drawable/button_background" />
+            android:backgroundTint="@color/your_custom_color"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_marginBottom="16dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shiftsRecyclerView"
@@ -26,15 +31,25 @@
             android:layout_marginTop="16dp"
             android:background="#FFFFFF" />
 
-
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonNewShift"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New Shift"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp" />
+            android:backgroundTint="#012670"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:textSize="18sp"
+            app:cornerRadius="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="100dp"
+            app:icon="@drawable/ic_add"
+            app:iconPadding="0dp"
+            app:iconTint="#FFFFFF"
+            app:rippleColor="#FFFFFF"
+        />
 
     </LinearLayout>
 </ScrollView>

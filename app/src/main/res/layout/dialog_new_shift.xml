@@ -16,6 +16,8 @@
             android:layout_height="wrap_content"
             android:text="Select Start Date"
             android:textColor="#FFFFFF"
+            android:backgroundTint="@color/your_custom_color"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -34,6 +36,8 @@
             android:layout_height="wrap_content"
             android:text="Select End Date"
             android:textColor="#FFFFFF"
+            android:backgroundTint="@color/your_custom_color"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -52,6 +56,8 @@
             android:layout_height="wrap_content"
             android:text="Select Start Time"
             android:textColor="#FFFFFF"
+            android:backgroundTint="@color/your_custom_color"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -70,6 +76,8 @@
             android:layout_height="wrap_content"
             android:text="Select End Time"
             android:textColor="#FFFFFF"
+            android:backgroundTint="@color/your_custom_color"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_marginBottom="16dp" />
 
         <TextView

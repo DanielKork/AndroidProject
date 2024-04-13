@@ -1,9 +1,9 @@
-<!-- fragment_login.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -46,7 +47,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Login"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        android:backgroundTint="@color/your_custom_color"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
+
+    <TextView
+        android:id="@+id/textViewGoToRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dont have an account? Create an account"
+        android:textSize="16sp"
+        android:textColor="@color/primary"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:clickable="true"
+        android:focusable="true"/>
+
 
 </LinearLayout>
 

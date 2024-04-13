@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal">
@@ -24,64 +24,42 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/editShiftButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Edit"-->
-<!--            android:paddingStart="16dp"-->
-<!--            android:paddingEnd="16dp"-->
-<!--            android:paddingTop="8dp"-->
-<!--            android:paddingBottom="8dp"-->
-<!--            android:layout_marginEnd="16dp"/>-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editShiftButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
             android:layout_height="wrap_content"
             android:text="Edit"
             android:textColor="#FFFFFF"
             android:backgroundTint="@color/your_custom_color"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:textSize="13sp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_marginEnd="16dp"/>
+            android:textSize="12sp"
+            android:padding="12dp"
+            android:layout_marginEnd="4dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteShiftButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:text="Delete"
             android:backgroundTint="@color/your_custom_color"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:textSize="13sp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_marginEnd="16dp"/>
-
+            android:textSize="12sp"
+            android:padding="12dp"
+            android:layout_marginEnd="4dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addToCalendarButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Add to Calendar"
             android:textColor="#FFFFFF"
             android:backgroundTint="@color/your_custom_color"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:minWidth="88dp"
-            android:minHeight="48dp"
-            app:cornerRadius="4dp"
-            android:textSize="13sp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:layout_marginEnd="8dp" />
-
+            android:textSize="12sp"
+            android:padding="12dp"/>
 
     </LinearLayout>
 </LinearLayout>

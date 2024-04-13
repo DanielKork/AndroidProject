@@ -2,68 +2,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center_vertical">
+    android:gravity="center_horizontal">
 
     <TextView
         android:id="@+id/shiftInfoTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Shift Information"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#333333"
-        android:layout_marginEnd="8dp"
-        android:gravity="start|center_vertical"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Shift Information"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
 
-        <Button
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/editShiftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit"
-            android:textColor="#007bff"
-            android:background="?android:attr/selectableItemBackground"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginEnd="16dp"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteShiftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
             android:textColor="#FF0000"
-            android:background="?android:attr/selectableItemBackground"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginEnd="16dp"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addToCalendarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add to Calendar"
-            android:textColor="#4CAF50"
-            android:background="?android:attr/selectableItemBackground"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"/>
-
     </LinearLayout>
 </LinearLayout>
+
+
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:padding="16dp"-->
+<!--    android:gravity="center_vertical">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/shiftInfoTextView"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="Shift Information"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="#333333"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:gravity="start|center_vertical"-->
+<!--        android:textAppearance="?android:attr/textAppearanceMedium"/>-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/editShiftButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Edit"-->
+<!--            android:textColor="#007bff"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/deleteShiftButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Delete"-->
+<!--            android:textColor="#FF0000"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:layout_marginBottom="8dp"/>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/addToCalendarButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Add to Calendar"-->
+<!--            android:textColor="#4CAF50"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"/>-->
+
+<!--    </LinearLayout>-->
+<!--</LinearLayout>-->
 
 
 

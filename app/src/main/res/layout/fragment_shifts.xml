@@ -12,118 +12,33 @@
         android:padding="16dp">
 
         <Button
-            android:id="@+id/buttonSelectStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Start Date"
-            android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start Date: Not Set"
-            android:textColor="#333333"
-            android:padding="8dp"
-            android:background="#ECECEC"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/buttonSelectEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select End Date"
-            android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="End Date: Not Set"
-            android:textColor="#333333"
-            android:padding="8dp"
-            android:background="#ECECEC"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/buttonSelectStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select Start Time"
-            android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewStartTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start Time: Not Set"
-            android:textColor="#333333"
-            android:padding="8dp"
-            android:background="#ECECEC"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/buttonSelectEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select End Time"
-            android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/textViewEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="End Time: Not Set"
-            android:textColor="#333333"
-            android:padding="8dp"
-            android:background="#ECECEC"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/editTextRole"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Role"
-            android:inputType="text"
-            android:background="#ECECEC"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/buttonAddShift"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Shift"
-            android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
-
-        <Button
             android:id="@+id/buttonAddAllShiftsToCalendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add All Shifts to Calendar"
             android:textColor="#FFFFFF"
-            android:background="#007bff"
-            android:layout_marginBottom="8dp" />
+            android:background="@drawable/button_background" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shiftsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="16dp"
             android:background="#FFFFFF" />
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonNewShift"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Shift"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp" />
 
     </LinearLayout>
 </ScrollView>
+
 
 
 

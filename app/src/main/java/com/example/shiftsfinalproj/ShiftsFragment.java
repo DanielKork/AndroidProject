@@ -410,6 +410,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -445,30 +446,33 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
     }
 
     private void initializeView(View view) {
-        editTextRole = view.findViewById(R.id.editTextRole);
-        textViewStartDate = view.findViewById(R.id.textViewStartDate);
-        textViewEndDate = view.findViewById(R.id.textViewEndDate);
-        textViewStartTime = view.findViewById(R.id.textViewStartTime);
-        textViewEndTime = view.findViewById(R.id.textViewEndTime);
+//        editTextRole = view.findViewById(R.id.editTextRole);
+//        textViewStartDate = view.findViewById(R.id.textViewStartDate);
+//        textViewEndDate = view.findViewById(R.id.textViewEndDate);
+//        textViewStartTime = view.findViewById(R.id.textViewStartTime);
+//        textViewEndTime = view.findViewById(R.id.textViewEndTime);
+        //Button buttonAddShift = view.findViewById(R.id.buttonAddShift);
         shiftsRecyclerView = view.findViewById(R.id.shiftsRecyclerView);
-
-        Button buttonSelectStartDate = view.findViewById(R.id.buttonSelectStartDate);
-        buttonSelectStartDate.setOnClickListener(v -> showDatePickerDialog(true));
-
-        Button buttonSelectStartTime = view.findViewById(R.id.buttonSelectStartTime);
-        buttonSelectStartTime.setOnClickListener(v -> showTimePickerDialog(true));
-
-        Button buttonSelectEndTime = view.findViewById(R.id.buttonSelectEndTime);
-        buttonSelectEndTime.setOnClickListener(v -> showTimePickerDialog(false));
-
-        Button buttonSelectEndDate = view.findViewById(R.id.buttonSelectEndDate);
-        buttonSelectEndDate.setOnClickListener(v -> showDatePickerDialog(false));
-
-        Button buttonAddShift = view.findViewById(R.id.buttonAddShift);
         Button buttonAddAllShiftsToCalendar = view.findViewById(R.id.buttonAddAllShiftsToCalendar);
+        Button buttonNewShift = view.findViewById(R.id.buttonNewShift);
+
+
+//        Button buttonSelectStartDate = view.findViewById(R.id.buttonSelectStartDate);
+//        buttonSelectStartDate.setOnClickListener(v -> showDatePickerDialog(true));
+//
+//        Button buttonSelectStartTime = view.findViewById(R.id.buttonSelectStartTime);
+//        buttonSelectStartTime.setOnClickListener(v -> showTimePickerDialog(true));
+//
+//        Button buttonSelectEndTime = view.findViewById(R.id.buttonSelectEndTime);
+//        buttonSelectEndTime.setOnClickListener(v -> showTimePickerDialog(false));
+//
+//        Button buttonSelectEndDate = view.findViewById(R.id.buttonSelectEndDate);
+//        buttonSelectEndDate.setOnClickListener(v -> showDatePickerDialog(false));
+
 
         loadUserShifts();
-        buttonAddShift.setOnClickListener(v -> addShift());
+        //buttonAddShift.setOnClickListener(v -> addShift());
+        buttonNewShift.setOnClickListener(v -> showNewShiftDialog());
         buttonAddAllShiftsToCalendar.setOnClickListener(v -> addAllShiftsToCalendar());
     }
 
@@ -477,8 +481,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
         shiftsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         shiftsRecyclerView.setAdapter(shiftAdapter);
     }
-
-
 
 
     //Load shitfs
@@ -565,71 +567,43 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
 
 
 
+    //new shift button
+    private void showNewShiftDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("New Shift");
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_new_shift, null);
 
-    //Delete Button and functions
-    @Override
-    public void onDeleteClick(Shift shift) {
-        // Delete the shift from Firestore
-        firestore.collection("shifts").document(shift.getShiftid())
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "Shift deleted", Toast.LENGTH_SHORT).show();
-                    loadUserShifts(); // Reload the shifts
-                })
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error deleting shift", Toast.LENGTH_SHORT).show());
+        editTextRole = dialogView.findViewById(R.id.editTextRole);
+        textViewStartDate = dialogView.findViewById(R.id.textViewStartDate);
+        textViewEndDate = dialogView.findViewById(R.id.textViewEndDate);
+        textViewStartTime = dialogView.findViewById(R.id.textViewStartTime);
+        textViewEndTime = dialogView.findViewById(R.id.textViewEndTime);
+
+
+        Button buttonSelectStartDate = dialogView.findViewById(R.id.buttonSelectStartDate);
+        buttonSelectStartDate.setOnClickListener(v -> showDatePickerDialog(true));
+
+        Button buttonSelectStartTime = dialogView.findViewById(R.id.buttonSelectStartTime);
+        buttonSelectStartTime.setOnClickListener(v -> showTimePickerDialog(true));
+
+        Button buttonSelectEndTime = dialogView.findViewById(R.id.buttonSelectEndTime);
+        buttonSelectEndTime.setOnClickListener(v -> showTimePickerDialog(false));
+
+        Button buttonSelectEndDate = dialogView.findViewById(R.id.buttonSelectEndDate);
+        buttonSelectEndDate.setOnClickListener(v -> showDatePickerDialog(false));
+
+        builder.setView(dialogView);
+
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            addShift();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        // Create and show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
-
-
-
-
-
-    //add to calendar for each shift
-    @Override
-    public void onAddToCalendarClick(Shift shift) {
-            if (shift != null) {
-            // Directly use the start and end timestamps from the Shift object.
-            String role = shift.getRole() != null ? shift.getRole() : "No Role";
-            long startTimestamp = shift.getStartTimestamp();
-            long endTimestamp = shift.getEndTimestamp();
-
-            Log.d(TAG, "Role: " + role + ", Start Time: " + startTimestamp + ", End Time: " + endTimestamp);
-            addEventToCalendar(role, startTimestamp, endTimestamp);
-            Toast.makeText(getContext(), "Added", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-//    private void addShift() {
-//        String role = editTextRole.getText().toString();
-//        String startDate = textViewStartDate.getText().toString();
-//        String endDate = textViewEndDate.getText().toString();
-//        String startTime = textViewStartTime.getText().toString();
-//        String endTime = textViewEndTime.getText().toString();
-//
-//        if (role.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-//            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        Map<String, Object> shift = new HashMap<>();
-//        shift.put("role", role);
-//        shift.put("startDate", startDate);
-//        shift.put("endDate", endDate);
-//        shift.put("startTime", startTime);
-//        shift.put("endTime", endTime);
-//        shift.put("user_id", user != null ? user.getUid() : "anonymous");
-//
-//        firestore.collection("shifts")
-//                .add(shift)
-//                .addOnSuccessListener(documentReference -> {
-//                    Toast.makeText(getContext(), "Shift added", Toast.LENGTH_SHORT).show();
-//                    loadUserShifts(); // Reload the shifts
-//                })
-//                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
-//    }
-
-    //Add shift
     private void addShift() {
         String startDate = textViewStartDate.getText().toString().replace("Start Date: ", "").trim();
         String endDate = textViewEndDate.getText().toString().replace("End Date: ", "").trim();
@@ -664,13 +638,71 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+    //    private void addShift() {
+//        String role = editTextRole.getText().toString();
+//        String startDate = textViewStartDate.getText().toString();
+//        String endDate = textViewEndDate.getText().toString();
+//        String startTime = textViewStartTime.getText().toString();
+//        String endTime = textViewEndTime.getText().toString();
+//
+//        if (role.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
+//            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        Map<String, Object> shift = new HashMap<>();
+//        shift.put("role", role);
+//        shift.put("startDate", startDate);
+//        shift.put("endDate", endDate);
+//        shift.put("startTime", startTime);
+//        shift.put("endTime", endTime);
+//        shift.put("user_id", user != null ? user.getUid() : "anonymous");
+//
+//        firestore.collection("shifts")
+//                .add(shift)
+//                .addOnSuccessListener(documentReference -> {
+//                    Toast.makeText(getContext(), "Shift added", Toast.LENGTH_SHORT).show();
+//                    loadUserShifts(); // Reload the shifts
+//                })
+//                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
+//    }
 
 
 
 
 
 
+    //Delete Button and functions
+    @Override
+    public void onDeleteClick(Shift shift) {
+        // Delete the shift from Firestore
+        firestore.collection("shifts").document(shift.getShiftid())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Shift deleted", Toast.LENGTH_SHORT).show();
+                    loadUserShifts(); // Reload the shifts
+                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error deleting shift", Toast.LENGTH_SHORT).show());
+    }
 
+
+
+
+
+    //add to calendar for each shift
+    @Override
+    public void onAddToCalendarClick(Shift shift) {
+            if (shift != null) {
+            // Directly use the start and end timestamps from the Shift object.
+            String role = shift.getRole() != null ? shift.getRole() : "No Role";
+            long startTimestamp = shift.getStartTimestamp();
+            long endTimestamp = shift.getEndTimestamp();
+
+            Log.d(TAG, "Role: " + role + ", Start Time: " + startTimestamp + ", End Time: " + endTimestamp);
+            addEventToCalendar(role, startTimestamp, endTimestamp);
+            //Toast.makeText(getContext(), "Added", Toast.LENGTH_SHORT).show();
+        }
+    }
     //Add to calendar with all the functions
     private void addAllShiftsToCalendar() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -757,6 +789,7 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                     boolean isPrimary = cursor.getInt(1) == 1;
                     if (isPrimary) {
                         Log.d(TAG, "Using primary calendar ID: " + id);
+                        Toast.makeText(getContext(), "Added", Toast.LENGTH_SHORT).show();
                         return id;
                     }
                 }

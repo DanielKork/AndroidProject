@@ -446,32 +446,12 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
     }
 
     private void initializeView(View view) {
-//        editTextRole = view.findViewById(R.id.editTextRole);
-//        textViewStartDate = view.findViewById(R.id.textViewStartDate);
-//        textViewEndDate = view.findViewById(R.id.textViewEndDate);
-//        textViewStartTime = view.findViewById(R.id.textViewStartTime);
-//        textViewEndTime = view.findViewById(R.id.textViewEndTime);
-        //Button buttonAddShift = view.findViewById(R.id.buttonAddShift);
+
         shiftsRecyclerView = view.findViewById(R.id.shiftsRecyclerView);
         Button buttonAddAllShiftsToCalendar = view.findViewById(R.id.buttonAddAllShiftsToCalendar);
         Button buttonNewShift = view.findViewById(R.id.buttonNewShift);
 
-
-//        Button buttonSelectStartDate = view.findViewById(R.id.buttonSelectStartDate);
-//        buttonSelectStartDate.setOnClickListener(v -> showDatePickerDialog(true));
-//
-//        Button buttonSelectStartTime = view.findViewById(R.id.buttonSelectStartTime);
-//        buttonSelectStartTime.setOnClickListener(v -> showTimePickerDialog(true));
-//
-//        Button buttonSelectEndTime = view.findViewById(R.id.buttonSelectEndTime);
-//        buttonSelectEndTime.setOnClickListener(v -> showTimePickerDialog(false));
-//
-//        Button buttonSelectEndDate = view.findViewById(R.id.buttonSelectEndDate);
-//        buttonSelectEndDate.setOnClickListener(v -> showDatePickerDialog(false));
-
-
         loadUserShifts();
-        //buttonAddShift.setOnClickListener(v -> addShift());
         buttonNewShift.setOnClickListener(v -> showNewShiftDialog());
         buttonAddAllShiftsToCalendar.setOnClickListener(v -> addAllShiftsToCalendar());
     }
@@ -638,34 +618,6 @@ public class ShiftsFragment extends Fragment implements ShiftAdapter.ItemClickLi
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to add shift: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-    //    private void addShift() {
-//        String role = editTextRole.getText().toString();
-//        String startDate = textViewStartDate.getText().toString();
-//        String endDate = textViewEndDate.getText().toString();
-//        String startTime = textViewStartTime.getText().toString();
-//        String endTime = textViewEndTime.getText().toString();
-//
-//        if (role.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || startTime.isEmpty() || endTime.isEmpty()) {
-//            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        Map<String, Object> shift = new HashMap<>();
-//        shift.put("role", role);
-//        shift.put("startDate", startDate);
-//        shift.put("endDate", endDate);
-//        shift.put("startTime", startTime);
-//        shift.put("endTime", endTime);
-//        shift.put("user_id", user != null ? user.getUid() : "anonymous");
-//
-//        firestore.collection("shifts")
-//                .add(shift)
-//                .addOnSuccessListener(documentReference -> {
-//                    Toast.makeText(getContext(), "Shift added", Toast.LENGTH_SHORT).show();
-//                    loadUserShifts(); // Reload the shifts
-//                })
-//                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error adding shift", Toast.LENGTH_SHORT).show());
-//    }
 
 
 
